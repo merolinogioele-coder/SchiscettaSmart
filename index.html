@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchiscettaSmart | Organizza i tuoi pranzi</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- HEADER / LOGO -->
+        <header>
+            <div class="logo-container">
+                <div class="logo-icon">🍲</div>
+                <div class="logo-text">Schiscetta<span>Smart</span></div>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="dashboard-layout">
+            
+            <!-- LEFT COLUMN: GENERATOR -->
+            <section class="generator-panel">
+                <h1>Organizza i tuoi pasti settimanali 🍱</h1>
+                <p>La tua settimana di schiscette pronta in pochi secondi.</p>
+                
+                <form id="plan-form">
+                    <div class="form-group">
+                        <label for="dieta">Scegli dieta</label>
+                        <select id="dieta" required>
+                            <option value="onnivoro">Onnivoro</option>
+                            <option value="vegetariano">Vegetariano</option>
+                            <option value="vegano">Vegano</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tempo">Tempo massimo (minuti)</label>
+                        <select id="tempo" required>
+                            <option value="15">15 minuti</option>
+                            <option value="30">30 minuti</option>
+                            <option value="45">45 minuti</option>
+                            <option value="60">60 minuti</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="generate-btn" class="primary-btn">Genera piano</button>
+                </form>
+
+                <div id="loading-spinner" class="hidden">
+                    <div class="spinner"></div>
+                    <p>L'AI sta cucinando il tuo piano...</p>
+                </div>
+                
+                <div class="saved-plans-link">
+                    <button class="secondary-btn">I miei piani salvati</button>
+                </div>
+            </section>
+
+            <!-- RIGHT COLUMN: RESULTS -->
+            <section class="results-panel">
+                <div id="empty-state" class="empty-state">
+                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80" alt="Healthy food" class="placeholder-img">
+                    <h3>Nessun piano generato</h3>
+                    <p>Inserisci le tue preferenze e clicca su "Genera piano" per iniziare.</p>
+                </div>
+
+                <div id="plan-results" class="hidden">
+                    <!-- Recipes will be injected here via JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- RECIPE MODAL POPUP -->
+    <div id="recipe-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-title">Titolo Ricetta</h2>
+                <span class="time-badge">⏱ <span id="modal-time"></span> min</span>
+            </div>
+            
+            <div class="modal-body">
+                <div class="video-container" id="modal-video-container">
+                    <iframe id="modal-video" src="" frameborder="0" allowfullscreen></iframe>
+                </div>
+
+                <div class="recipe-details">
+                    <div class="ingredients-list">
+                        <h3>Ingredienti</h3>
+                        <p id="modal-ingredients"></p>
+                    </div>
+                    
+                    <div class="steps-list">
+                        <h3>Procedimento</h3>
+                        <p id="modal-steps"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
