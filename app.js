@@ -1,7 +1,6 @@
-// =============================================
+/ =============================================
 // DATABASE RICETTE LOCALE - Nessuna AI richiesta
 // =============================================
-
 const RICETTE = {
   onnivoro: {
     15: [
@@ -29,7 +28,6 @@ const RICETTE = {
       { title: "Ribollita toscana", minutes: 60, ingredients_text: "cavolo nero, fagioli borlotti, pane raffermo, carote, sedano, cipolla, pomodori", steps_text: "1. Soffriggi le verdure. 2. Aggiungi fagioli e cavolo. 3. Copri con acqua e cuoci 40 min. 4. Aggiungi il pane e fai riposare.", video_url: "" },
     ]
   },
-
   vegetariano: {
     15: [
       { title: "Insalata caprese con origano", minutes: 10, ingredients_text: "mozzarella fresca, pomodori, basilico, olio EVO, sale, origano", steps_text: "1. Taglia mozzarella e pomodori a fette. 2. Alterna sul piatto. 3. Condisci con olio, sale e basilico. 4. Aggiungi origano.", video_url: "" },
@@ -52,7 +50,6 @@ const RICETTE = {
       { title: "Minestrone di verdure di stagione", minutes: 60, ingredients_text: "zucchine, carote, patate, fagioli, piselli, pomodori, sedano, cipolla, pasta, parmigiano", steps_text: "1. Soffriggi le verdure dure. 2. Aggiungi tutte le altre verdure e i legumi. 3. Copri con acqua. 4. Cuoci 40 min, aggiungi pasta e servi con parmigiano.", video_url: "" },
     ]
   },
-
   vegano: {
     15: [
       { title: "Bowl di hummus e verdure crude", minutes: 10, ingredients_text: "hummus, carote, sedano, cetriolo, peperoni, olive, crackers integrali", steps_text: "1. Metti l'hummus in una ciotola. 2. Taglia le verdure a bastoncini. 3. Disponi intorno all'hummus. 4. Aggiungi olive e crackers.", video_url: "" },
@@ -76,15 +73,12 @@ const RICETTE = {
     ]
   }
 };
-
 // =============================================
 // LOGICA APP
 // =============================================
-
 function getRandomPlan(dieta, tempo) {
   const tempoInt = parseInt(tempo);
   let pool = [];
-
   // Aggiungi ricette del tempo selezionato e tempi più brevi
   const tempiDisponibili = [15, 30, 45, 60].filter(t => t <= tempoInt);
   
@@ -92,12 +86,10 @@ function getRandomPlan(dieta, tempo) {
     const ricette = RICETTE[dieta]?.[t] || [];
     pool = [...pool, ...ricette];
   });
-
   // Se non ci sono abbastanza ricette, usa tutte quelle disponibili
   if (pool.length === 0) {
     pool = Object.values(RICETTE[dieta] || {}).flat();
   }
-
   // Mischia e prendi 5 ricette
   const shuffled = pool.sort(() => Math.random() - 0.5);
   const giorni = ['Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì'];
@@ -107,37 +99,28 @@ function getRandomPlan(dieta, tempo) {
     day
   }));
 }
-
 // =============================================
 // UI
 // =============================================
-
 const form = document.getElementById('plan-form');
 const generateBtn = document.getElementById('generate-btn');
 const spinner = document.getElementById('loading-spinner');
 const emptyState = document.getElementById('empty-state');
 const resultsContainer = document.getElementById('plan-results');
-
 const modal = document.getElementById('recipe-modal');
 const closeBtn = document.querySelector('.close-btn');
 const modalTitle = document.getElementById('modal-title');
 const modalTime = document.getElementById('modal-time');
 const modalIngredients = document.getElementById('modal-ingredients');
 const modalSteps = document.getElementById('modal-steps');
-const modalVideo = document.getElementById('modal-video');
-const modalVideoContainer = document.getElementById('modal-video-container');
-
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-
   const dieta = document.getElementById('dieta').value;
   const tempo = document.getElementById('tempo').value;
-
   generateBtn.disabled = true;
   spinner.classList.remove('hidden');
   emptyState.classList.add('hidden');
   resultsContainer.classList.add('hidden');
-
   // Simula un piccolo delay per l'effetto "sta elaborando"
   setTimeout(() => {
     const plan = getRandomPlan(dieta, tempo);
@@ -146,10 +129,8 @@ form.addEventListener('submit', (e) => {
     spinner.classList.add('hidden');
   }, 1200);
 });
-
 function renderPlan(plan) {
   resultsContainer.innerHTML = '';
-
   plan.forEach(recipe => {
     const card = document.createElement('div');
     card.className = 'day-card';
@@ -163,40 +144,24 @@ function renderPlan(plan) {
     card.querySelector('.view-recipe-btn').addEventListener('click', () => openModal(recipe));
     resultsContainer.appendChild(card);
   });
-
   resultsContainer.classList.remove('hidden');
 }
-
 function openModal(recipe) {
   modalTitle.textContent = recipe.title;
   modalTime.textContent = recipe.minutes;
-
   const ingredientsHtml = recipe.ingredients_text
     .split(',')
     .map(i => `• ${i.trim()}`)
     .join('<br>');
   modalIngredients.innerHTML = ingredientsHtml;
   modalSteps.innerHTML = recipe.steps_text.replace(/(\d+\.)/g, '<br>$1').trim();
-
-  if (recipe.video_url) {
-    modalVideo.src = recipe.video_url;
-    modalVideoContainer.classList.remove('hidden');
-  } else {
-    modalVideoContainer.classList.add('hidden');
-    modalVideo.src = '';
-  }
-
   modal.classList.remove('hidden');
 }
-
 closeBtn.addEventListener('click', () => {
   modal.classList.add('hidden');
-  modalVideo.src = '';
 });
-
 window.addEventListener('click', (e) => {
   if (e.target === modal) {
     modal.classList.add('hidden');
-    modalVideo.src = '';
   }
 });
