@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SchiscettaSmart</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header class="dashboard-header">
+            <a href="index.html" class="logo-container" style="text-decoration:none">
+                <div class="logo-icon">🍲</div>
+                <div class="logo-text">Schiscetta<span>Smart</span></div>
+            </a>
+            <div class="header-right">
+                <span id="user-email" class="user-email"></span>
+                <button id="logout-btn" class="logout-btn">Esci</button>
+            </div>
+        </header>
+
+        <main class="dashboard-layout">
+            <!-- COLONNA SINISTRA: Generatore -->
+            <section class="generator-panel">
+                <h1>La tua settimana di schiscette 🍱</h1>
+                <p>Scegli le tue preferenze e genera il piano settimanale.</p>
+
+                <form id="plan-form">
+                    <div class="form-group">
+                        <label for="dieta">Scegli dieta</label>
+                        <select id="dieta" required>
+                            <option value="onnivoro">Onnivoro</option>
+                            <option value="vegetariano">Vegetariano</option>
+                            <option value="vegano">Vegano</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tempo">Tempo massimo</label>
+                        <select id="tempo" required>
+                            <option value="15">15 minuti</option>
+                            <option value="30">30 minuti</option>
+                            <option value="45">45 minuti</option>
+                            <option value="60">60 minuti</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="generate-btn" class="primary-btn">Genera piano</button>
+                </form>
+
+                <div id="loading-spinner" class="hidden">
+                    <div class="spinner"></div>
+                    <p>Sto preparando il tuo piano...</p>
+                </div>
+
+                <div class="saved-plans-link">
+                    <button class="secondary-btn">I miei piani salvati</button>
+                </div>
+            </section>
+
+            <!-- COLONNA DESTRA: Risultati -->
+            <section class="results-panel">
+                <div id="empty-state" class="empty-state">
+                    <img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=600&q=80" alt="Healthy food" class="placeholder-img">
+                    <h3>Nessun piano generato</h3>
+                    <p>Scegli le preferenze e clicca "Genera piano".</p>
+                </div>
+                <div id="plan-results" class="hidden"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL RICETTA -->
+    <div id="recipe-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-title"></h2>
+                <span class="time-badge">⏱ <span id="modal-time"></span> min</span>
+            </div>
+            <div class="modal-body">
+                <div class="recipe-details">
+                    <div class="ingredients-list">
+                        <h3>Ingredienti</h3>
+                        <p id="modal-ingredients"></p>
+                    </div>
+                    <div class="steps-list">
+                        <h3>Procedimento</h3>
+                        <p id="modal-steps"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Proteggi la dashboard: redirect se non loggato
+        requireAuth('login.html');
+
+        // Mostra email utente e gestisci logout
+        supabaseClient.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                document.getElementById('user-email').textContent = session.user.email;
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await supabaseClient.auth.signOut();
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
