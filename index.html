@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SchiscettaSmart | Organizza i tuoi pranzi</title>
+    <meta name="description" content="Pianifica i tuoi pranzi settimanali in pochi minuti. Risparmia tempo, soldi e sprechi con SchiscettaSmart.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="landing-page">
+
+    <div class="leaf-top-right"></div>
+    <div class="leaf-bottom-left"></div>
+
+    <header class="landing-header">
+        <div class="logo-container">
+            <div class="logo-icon">🍲</div>
+            <div class="logo-text">Schiscetta<span>Smart</span></div>
+        </div>
+    </header>
+
+    <main class="landing-main">
+        <!-- Immagine sinistra -->
+        <div class="food-images-left">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=220&q=80" alt="Pranzo sano" class="food-img food-img-top">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=220&q=80" alt="Insalata" class="food-img food-img-bottom">
+        </div>
+
+        <!-- Centro -->
+        <div class="landing-center">
+            <h1>🍱 SchiscettaSmart</h1>
+            <p class="landing-subtitle">Organizza i tuoi pranzi settimanali in pochi minuti<br>e risparmia tempo, soldi e sprechi.</p>
+            
+            <a href="login.html" class="primary-btn landing-btn">Accedi</a>
+
+            <div class="features-box">
+                <div class="feature-item">✔ Piano settimanale personalizzato</div>
+                <div class="feature-item">✔ Lista della spesa automatica</div>
+                <div class="feature-item">✔ Risparmio stimato ogni settimana</div>
+            </div>
+        </div>
+
+        <!-- Immagine destra -->
+        <div class="food-images-right">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=220&q=80" alt="Meal prep" class="food-img food-img-top">
+            <img src="https://images.unsplash.com/photo-1547592180-85f173990554?w=220&q=80" alt="Bento box" class="food-img food-img-bottom">
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Se già loggato, vai alla dashboard
+        checkAuthAndRedirect('dashboard.html');
+    </script>
+</body>
+</html>
