@@ -522,7 +522,20 @@ async function sendChatMessage() {
 
     if (error) {
       console.error('Errore dal chatbot:', error);
-      addChatMessage("Scusa, ho avuto un problema di connessione. Riprova più tardi!", 'bot');
+      
+      // Prova ad estrarre il messaggio di errore reale se esiste
+      let errorMessage = "Scusa, ho avuto un problema di connessione. Riprova più tardi!";
+      try {
+        // Se error.context contiene il body JSON mandato dalla nostra Edge Function
+        if (error.context && typeof error.context.json === 'function') {
+           const errBody = await error.context.json();
+           if (errBody && errBody.error) {
+               errorMessage = `Errore Backend: ${errBody.error}`;
+           }
+        }
+      } catch(e) {}
+
+      addChatMessage(errorMessage, 'bot');
     } else {
       // Assumiamo che la funzione ritorni { reply: "testo della risposta" }
       const replyText = data?.reply || "Non ho capito bene, puoi ripetere?";
