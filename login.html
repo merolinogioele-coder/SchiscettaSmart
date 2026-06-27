@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi | SchiscettaSmart</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+    <div class="leaf-top-right small"></div>
+
+    <div class="auth-layout">
+        <!-- COLONNA SINISTRA: Form -->
+        <div class="auth-form-col">
+            <a href="index.html" class="logo-container" style="text-decoration:none">
+                <div class="logo-icon">🍲</div>
+                <div class="logo-text">Schiscetta<span>Smart</span></div>
+            </a>
+
+            <div class="auth-form-content">
+                <h1>Accedi a<br>SchiscettaSmart</h1>
+                <p class="auth-subtitle">Accedi per organizzare i tuoi pasti settimanali 🍱</p>
+
+                <div id="auth-error" class="error-box hidden"></div>
+                <div id="auth-success" class="success-box hidden"></div>
+
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="E-mail" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="Password" required autocomplete="current-password">
+                    </div>
+                    <button type="submit" id="login-btn" class="primary-btn full-width">Accedi</button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>oppure</span>
+                </div>
+
+                <p class="auth-link-text">Non hai un account? <a href="register.html">Registrati</a></p>
+                <a href="register.html" class="secondary-btn full-width">Registrati</a>
+            </div>
+        </div>
+
+        <!-- COLONNA DESTRA: Immagine decorativa -->
+        <div class="auth-image-col">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="Pasti settimanali" class="auth-bg-img">
+            <div class="auth-days-overlay">
+                <div class="day-badge">🥗 Lunedì <span>Pasto equilibrato</span></div>
+                <div class="day-badge">⚡ Martedì <span>Ricco di energia</span></div>
+                <div class="day-badge">🌾 Mercoledì <span>Fonte di fibre</span></div>
+                <div class="day-badge">💪 Giovedì <span>Proteico e leggero</span></div>
+                <div class="day-badge">😊 Venerdì <span>Leggero e gustoso</span></div>
+            </div>
+            <p class="auth-image-caption">Organizza. Pianifica. Mangia meglio. ♥</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <script>
+        // Se già loggato, vai alla dashboard
+        checkAuthAndRedirect('dashboard.html');
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('login-btn');
+            const errorBox = document.getElementById('auth-error');
+            
+            btn.disabled = true;
+            btn.textContent = 'Accesso in corso...';
+            errorBox.classList.add('hidden');
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                errorBox.textContent = 'Email o password errati. Riprova.';
+                errorBox.classList.remove('hidden');
+                btn.disabled = false;
+                btn.textContent = 'Accedi';
+            } else {
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
